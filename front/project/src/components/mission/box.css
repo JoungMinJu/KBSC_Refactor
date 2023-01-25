@@ -1,0 +1,18 @@
+.custom_box{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    height: 60px;
+}
+
+.custom_box_title{
+    color: black;
+}
+
+.custom_box_body{
+    color: black;
+
+}
