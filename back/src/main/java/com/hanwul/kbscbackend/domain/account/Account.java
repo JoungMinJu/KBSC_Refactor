@@ -38,21 +38,9 @@ public class Account implements UserDetails {
     @OneToOne
     private ChatRoom chatRoom;
 
-//    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-//    private List<EmotionLike> emotionLikeList = new ArrayList<>();
-
-//    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-//    private List<Emotion> emotionList = new ArrayList<>();
-
-//    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-//    private List<Answer> answerList = new ArrayList<>() ;
-
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<>();
-
-    public Account() {
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

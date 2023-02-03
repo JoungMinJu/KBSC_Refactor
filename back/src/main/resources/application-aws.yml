@@ -1,10 +1,13 @@
 cloud:
   aws:
+    credentials :
+      accessKey : ${s3.accessKey}
+      secretKey : ${s3.secretKey}
     s3:
-      bucket: kbsc-bucket
+      bucket: hanwul
     region:
       static : ap-northeast-2
     stack:
       auto: false
-    credentials:
-      instanceProfile: true
+#    credentials:
+#      instanceProfile: true

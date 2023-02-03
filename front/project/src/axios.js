@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const APIURL = "172.17.202.1"
+export const APIURL = "localhost"
 
 // 로그인이 안되어있는 경우에 사용하는 API(토큰이 없는경우 요청)
 export const API = axios.create({

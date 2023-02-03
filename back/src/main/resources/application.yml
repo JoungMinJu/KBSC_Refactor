@@ -3,7 +3,7 @@ spring:
     include:
       - KEY
       - aws
-      - credentials
+#      - credentials
       - cloud
     active: dev
   servlet:

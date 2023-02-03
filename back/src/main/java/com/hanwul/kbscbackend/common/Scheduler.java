@@ -27,9 +27,9 @@ public class Scheduler {
 
     @Scheduled(cron = "0 0 00 * * *")
     @Transactional
-    public void create(){
+    public void create() {
         List<Account> accounts = accountRepository.findAll();
-        for(int i = 0; i < accounts.size(); i++){
+        for (int i = 0; i < accounts.size(); i++) {
             Success success = Success.builder()
                     .count(0L)
                     .account(accounts.get(i))

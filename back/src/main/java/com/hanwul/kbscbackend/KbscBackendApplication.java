@@ -9,7 +9,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableJpaAuditing
 @SpringBootApplication
 public class KbscBackendApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(KbscBackendApplication.class, args);
     }

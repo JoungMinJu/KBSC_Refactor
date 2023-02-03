@@ -40,8 +40,7 @@ public class AccountService {
     @Transactional
     public Account save(SignUpDto signUpDto) {
         String username = signUpDto.getUsername();
-        Optional<Account> result = accountRepository.findByUsername(username);
-        if(result.isPresent()){
+        if (accountRepository.findByUsername(username).isPresent()) {
             throw new UserException();
         }
         Account account = accountRepository.save(toEntity(signUpDto));
@@ -76,7 +75,7 @@ public class AccountService {
     }
 
     //로그아웃
-    public void finish(){
+    public void finish() {
 
     }
 
