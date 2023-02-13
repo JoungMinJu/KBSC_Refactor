@@ -1,6 +1,16 @@
 # KBSC_Refactor
 
 
+### Develop Pattern
+1. Issue에 작업 내용 작성
+2. 브랜치 파기 <br>
+  -> 새로운 기능 제작 = feature/{issue_num} <br>
+  -> 제작한 기능 수정 = fix/{issue_num} <br>
+  => Commit 메세지 = {feature or fix}#{issue_num}:{커밋내용} <br>
+3. Main 브랜치에 PR <br>
+  -> 내용에 close #{issue_num}
+
+
 ### Commit Message Rule
 
 | 이름 | 정의 |
