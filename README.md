@@ -1,6 +1,6 @@
 # KBSC_Refactor
 
---
+
 ### Commit Message Rule
 
 | 이름 | 정의 |
