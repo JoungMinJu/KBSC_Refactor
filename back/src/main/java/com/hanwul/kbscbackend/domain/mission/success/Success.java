@@ -25,11 +25,11 @@ public class Success extends BaseEntity {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    public void deletesuccess(){
+    public void deletesuccess() {
         this.count--;
     }
 
-    public void addsuccess(){
+    public void addsuccess() {
         this.count++;
     }
 }

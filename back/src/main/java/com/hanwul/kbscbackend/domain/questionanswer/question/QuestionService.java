@@ -1,9 +1,6 @@
 package com.hanwul.kbscbackend.domain.questionanswer.question;
 
 
-import com.hanwul.kbscbackend.domain.answer.Answer;
-import com.hanwul.kbscbackend.domain.answer.AnswerDto;
-import com.hanwul.kbscbackend.domain.questionanswer.question.QuestionRepository;
 import com.hanwul.kbscbackend.dto.BasicResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +19,7 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
 
-    public BasicResponseDto<List<QuestionDto>> getAllList(){
+    public BasicResponseDto<List<QuestionDto>> getAllList() {
         List<Question> all = questionRepository.findAll();
         List<QuestionDto> dtoList = getDtoList(all);
         return new BasicResponseDto<>(HttpStatus.OK.value(), "question", dtoList);
@@ -34,14 +31,14 @@ public class QuestionService {
                 .collect(Collectors.toList());
     }
 
-    public QuestionDto entityToDto(Question question){
+    public QuestionDto entityToDto(Question question) {
         return QuestionDto.builder()
                 .id(question.getId())
                 .content(question.getContent())
                 .build();
     }
 
-    public Question dtoToEntity(QuestionDto questionDto){
+    public Question dtoToEntity(QuestionDto questionDto) {
         return Question.builder()
                 .content(questionDto.getContent())
                 .build();

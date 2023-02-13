@@ -1,9 +1,12 @@
 package com.hanwul.kbscbackend.domain.answer;
 
 import com.hanwul.kbscbackend.common.BaseEntity;
-import com.hanwul.kbscbackend.domain.questionanswer.question.Question;
 import com.hanwul.kbscbackend.domain.account.Account;
-import lombok.*;
+import com.hanwul.kbscbackend.domain.questionanswer.question.Question;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -28,7 +31,7 @@ public class Answer extends BaseEntity {
 
     private String answer;
 
-    public void changeAnswer(String answer){
+    public void changeAnswer(String answer) {
         this.answer = answer;
     }
 }

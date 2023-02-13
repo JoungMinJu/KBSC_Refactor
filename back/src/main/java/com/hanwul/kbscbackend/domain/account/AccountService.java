@@ -6,23 +6,15 @@ import com.hanwul.kbscbackend.domain.mission.missionaccount.MissionAccount;
 import com.hanwul.kbscbackend.domain.mission.missionaccount.MissionAccountRepository;
 import com.hanwul.kbscbackend.domain.mission.success.Success;
 import com.hanwul.kbscbackend.domain.mission.success.SuccessRepository;
-import com.hanwul.kbscbackend.domain.security.JwtTokenProvider;
 import com.hanwul.kbscbackend.exception.UserException;
 import com.hanwul.kbscbackend.exception.WrongInputException;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.swing.text.html.Option;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor

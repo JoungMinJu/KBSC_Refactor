@@ -17,27 +17,27 @@ public class ChatRoomController {
     private final ChatRoomService chatRoomService;
 
     @PostMapping
-    public BasicResponseDto<Long> create(@RequestBody ChatRoomDto chatRoomDto, Principal principal){
+    public BasicResponseDto<Long> create(@RequestBody ChatRoomDto chatRoomDto, Principal principal) {
         return chatRoomService.create(chatRoomDto, principal);
     }
 
     @GetMapping("/{chatRoomId}")
-    public BasicResponseDto<ChatRoomDto> read(@PathVariable Long chatRoomId){
+    public BasicResponseDto<ChatRoomDto> read(@PathVariable Long chatRoomId) {
         return chatRoomService.read(chatRoomId);
     }
 
     @GetMapping
-    public BasicResponseDto<List<ChatRoomDto>> getAll(){
+    public BasicResponseDto<List<ChatRoomDto>> getAll() {
         return chatRoomService.getAll();
     }
 
     @GetMapping("/my")
-    public BasicResponseDto<List<ChatRoomDto>> getMy(Principal principal){
+    public BasicResponseDto<List<ChatRoomDto>> getMy(Principal principal) {
         return chatRoomService.getMy(principal);
     }
 
     @DeleteMapping("/{chatRoomId}")
-    public BasicResponseDto<Void> delete(@PathVariable Long chatRoomId){
+    public BasicResponseDto<Void> delete(@PathVariable Long chatRoomId) {
         return chatRoomService.delete(chatRoomId);
     }
 

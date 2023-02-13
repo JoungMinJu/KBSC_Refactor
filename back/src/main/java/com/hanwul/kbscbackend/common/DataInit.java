@@ -35,7 +35,7 @@ public class DataInit {
 
     @PostConstruct
     void init() {
-        for (int i=0; i<5; i++) {
+        for (int i = 0; i < 5; i++) {
             Account account = Account.builder()
                     .username("user" + i)
                     .nickname("nick" + i)

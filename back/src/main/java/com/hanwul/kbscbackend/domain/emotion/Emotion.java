@@ -2,11 +2,12 @@ package com.hanwul.kbscbackend.domain.emotion;
 
 import com.hanwul.kbscbackend.common.BaseEntity;
 import com.hanwul.kbscbackend.domain.account.Account;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -31,19 +32,19 @@ public class Emotion extends BaseEntity {
 
     private Long count;
 
-    public void changeStatus(Status status){
+    public void changeStatus(Status status) {
         this.status = status;
     }
 
-    public void changeContent(String content){
+    public void changeContent(String content) {
         this.content = content;
     }
 
-    public void deleteLike(){
+    public void deleteLike() {
         this.count--;
     }
 
-    public void addLike(){
+    public void addLike() {
         this.count++;
     }
 }

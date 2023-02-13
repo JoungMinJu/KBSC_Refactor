@@ -1,6 +1,5 @@
 package com.hanwul.kbscbackend.exception;
 
-import akka.http.javadsl.Http;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 

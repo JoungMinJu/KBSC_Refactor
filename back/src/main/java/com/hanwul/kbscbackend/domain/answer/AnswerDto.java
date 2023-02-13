@@ -1,6 +1,5 @@
 package com.hanwul.kbscbackend.domain.answer;
 
-import com.hanwul.kbscbackend.domain.account.Account;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;

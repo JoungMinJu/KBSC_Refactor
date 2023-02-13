@@ -26,16 +26,16 @@ public class ChatRoomService {
     private final RateRepository rateRepository;
 
     @Transactional
-    public BasicResponseDto<Long> create(ChatRoomDto chatRoomDto, Principal principal){
+    public BasicResponseDto<Long> create(ChatRoomDto chatRoomDto, Principal principal) {
         Account account = get_account(principal);
         ChatRoom chatRoom = dtoToEntity(chatRoomDto, account);
         chatRoomRepository.save(chatRoom);
         return new BasicResponseDto<>(HttpStatus.OK.value(), "chatRoom", chatRoom.getId());
     }
 
-    public BasicResponseDto<ChatRoomDto> read(Long chatRoomId){
+    public BasicResponseDto<ChatRoomDto> read(Long chatRoomId) {
         Optional<ChatRoom> result = chatRoomRepository.findById(chatRoomId);
-        if(result.isEmpty()){
+        if (result.isEmpty()) {
             throw new IllegalArgumentException("해당 ID의 채팅룸 없음");
         }
         ChatRoom chatRoom = result.get();
@@ -43,7 +43,7 @@ public class ChatRoomService {
         return new BasicResponseDto<>(HttpStatus.OK.value(), "chatRoom", chatRoomDto);
     }
 
-    public BasicResponseDto<List<ChatRoomDto>> getAll(){
+    public BasicResponseDto<List<ChatRoomDto>> getAll() {
         List<ChatRoom> results = chatRoomRepository.findAll();
         List<ChatRoomDto> chatRoomDtos = results.stream().map(chatRoom -> {
             ChatRoomDto chatRoomDto = entityToDto(chatRoom);
@@ -57,14 +57,14 @@ public class ChatRoomService {
         return new BasicResponseDto<>(HttpStatus.OK.value(), "chatRoom", chatRoomDtos);
     }
 
-    public BasicResponseDto<List<ChatRoomDto>> getMy(Principal principal){
+    public BasicResponseDto<List<ChatRoomDto>> getMy(Principal principal) {
         Account account = get_account(principal);
         List<ChatRoom> byAccount = chatRoomRepository.findByAccount(account);
         List<ChatRoomDto> dtos = byAccount.stream().map(chatRoom -> entityToDto(chatRoom)).collect(Collectors.toList());
         return new BasicResponseDto<>(HttpStatus.OK.value(), "chatRoom", dtos);
     }
 
-    public BasicResponseDto<Void> delete(Long chatRoomId){
+    public BasicResponseDto<Void> delete(Long chatRoomId) {
         chatRoomRepository.deleteById(chatRoomId);
         return new BasicResponseDto<>(HttpStatus.OK.value(), "chatRoom", null);
     }
@@ -73,7 +73,7 @@ public class ChatRoomService {
         return accountRepository.findByUsername(principal.getName()).get();
     }
 
-    public ChatRoom dtoToEntity(ChatRoomDto chatRoomDto, Account account){
+    public ChatRoom dtoToEntity(ChatRoomDto chatRoomDto, Account account) {
         return ChatRoom.builder()
                 .id(chatRoomDto.getId())
                 .account(account)
@@ -82,7 +82,7 @@ public class ChatRoomService {
                 .build();
     }
 
-    public ChatRoomDto entityToDto(ChatRoom chatRoom){
+    public ChatRoomDto entityToDto(ChatRoom chatRoom) {
         return ChatRoomDto.builder()
                 .id(chatRoom.getId())
                 .description(chatRoom.getDescription())

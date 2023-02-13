@@ -12,8 +12,11 @@ import java.util.Optional;
 public interface EmotionLikeRepository extends JpaRepository<EmotionLike, Long> {
 
     Optional<EmotionLike> findByAccountAndEmotion(Account account, Emotion emotion);
+
     List<EmotionLike> findAllByCreatedDateTimeBetween(LocalDateTime start, LocalDateTime end);
-    List<EmotionLike> findByAccount (Account account);
+
+    List<EmotionLike> findByAccount(Account account);
+
     void deleteByAccount(Account account);
 
     @Query("SELECT e FROM EmotionLike e where e.createdDateTime between :start and :end")

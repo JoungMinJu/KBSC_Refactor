@@ -1,2 +1,4 @@
-package com.hanwul.kbscbackend.file;public class FileUploadController {
+package com.hanwul.kbscbackend.file;
+
+public class FileUploadController {
 }

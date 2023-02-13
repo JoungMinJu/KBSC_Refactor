@@ -19,7 +19,6 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,7 +35,7 @@ public class EmotionService {
 
     public BasicResponseDto<EmotionDto> read(Long emotionId) {
         Optional<Emotion> result = emotionRepository.findById(emotionId);
-        if (result.isEmpty()){
+        if (result.isEmpty()) {
             throw new WrongEmotionId();
         }
         Emotion emotion = result.get();
@@ -57,11 +56,11 @@ public class EmotionService {
     public BasicResponseDto<Long> modify(Long emotionID, EmotionDto emotionDto, Principal principal) {
         Account request_account = get_account(principal);
         Optional<Emotion> byId = emotionRepository.findById(emotionID);
-        if(byId.isEmpty()){
+        if (byId.isEmpty()) {
             throw new WrongEmotionId();
         }
         Emotion emotion = byId.get();
-        if(emotion.getAccount().getId() != request_account.getId()){
+        if (emotion.getAccount().getId() != request_account.getId()) {
             throw new WrongMatchEmotion();
         }
         emotion.changeContent(emotionDto.getContent());
@@ -78,11 +77,11 @@ public class EmotionService {
     public BasicResponseDto<Void> delete(Long id, Principal principal) {
         Account account = get_account(principal);
         Optional<Emotion> byId = emotionRepository.findById(id);
-        if(byId.isEmpty()){
+        if (byId.isEmpty()) {
             throw new WrongEmotionId();
         }
         Emotion emotion = byId.get();
-        if(emotion.getAccount().getId() != account.getId()){
+        if (emotion.getAccount().getId() != account.getId()) {
             throw new WrongMatchEmotion();
         }
         emotionRepository.deleteById(id);
@@ -117,21 +116,19 @@ public class EmotionService {
         List<Emotion> result;
         List<EmotionLike> liked = emotionLikeRepository.findByAccount(account);
 
-        if(type.equals("private")){
+        if (type.equals("private")) {
             result = emotionRepository.findAllByAccount(account);
-        }
-        else if(type.equals("public")){
+        } else if (type.equals("public")) {
             // public 한 애들 -> 시간 순
             result = emotionRepository.findAllPublicStatus(Sort.by("createdDateTime").descending());
-       }
-        else {
+        } else {
             throw new WrongEmotionType();
         }
         List<EmotionDto> emotionDtos = result.stream().map(emotion -> entityToDto(emotion))
                 .collect(Collectors.toList());
         for (EmotionDto emotionDto : emotionDtos) {
             for (EmotionLike emotionLike : liked) {
-                if(emotionLike.getEmotion().getId() == emotionDto.getId()){
+                if (emotionLike.getEmotion().getId() == emotionDto.getId()) {
                     emotionDto.setLike(true);
                 }
             }
@@ -141,11 +138,11 @@ public class EmotionService {
 
     // like 많이 받은 순 세 개
     @Transactional
-    public BasicResponseDto<Void> like(Long emotionId, Principal principal){
+    public BasicResponseDto<Void> like(Long emotionId, Principal principal) {
         Account account = get_account(principal);
         Optional<Emotion> byId = emotionRepository.findById(emotionId);
 
-        if(byId.isEmpty()){
+        if (byId.isEmpty()) {
             throw new WrongEmotionId();
         }
 
@@ -169,14 +166,14 @@ public class EmotionService {
         Account account = get_account(principal);
         LocalDateTime start = LocalDateTime.of(LocalDate.now().minusDays(7), LocalTime.of(0, 0, 0));
         LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
-        List<Emotion> result = emotionRepository.findLikeTopSevenDays(start, end,Sort.by(Sort.Direction.DESC,"count"));
+        List<Emotion> result = emotionRepository.findLikeTopSevenDays(start, end, Sort.by(Sort.Direction.DESC, "count"));
         List<EmotionLike> liked = emotionLikeRepository.findByAccount(account);
         List<EmotionDto> list = result.stream().limit(3)
                 .map(emotion -> entityToDto(emotion))
                 .collect(Collectors.toList());
         for (EmotionDto emotionDto : list) {
             for (EmotionLike emotionLike : liked) {
-                if(emotionLike.getEmotion().getId() == emotionDto.getId()){
+                if (emotionLike.getEmotion().getId() == emotionDto.getId()) {
                     emotionDto.setLike(true);
                 }
             }

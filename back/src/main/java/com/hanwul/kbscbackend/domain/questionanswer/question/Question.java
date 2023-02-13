@@ -1,18 +1,16 @@
 package com.hanwul.kbscbackend.domain.questionanswer.question;
 
 import com.hanwul.kbscbackend.common.BaseEntity;
-import com.hanwul.kbscbackend.domain.answer.Answer;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "question")
 public class Question extends BaseEntity {

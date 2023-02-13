@@ -41,10 +41,10 @@ public class MissionService {
 
     // 토글버튼 눌렀을 때(categoryAccount)
     @Transactional
-    public BasicResponseDto<Void> toggleClick(Long categoryId, Principal principal){
+    public BasicResponseDto<Void> toggleClick(Long categoryId, Principal principal) {
         Account account = get_account(principal);
         Optional<Category> byId = categoryRepository.findById(categoryId);
-        if(byId.isEmpty()){
+        if (byId.isEmpty()) {
             throw new WrongCategoryId();
         }
         Category category = byId.get();
@@ -61,48 +61,48 @@ public class MissionService {
         return new BasicResponseDto<>(HttpStatus.OK.value(), "categoryclick", null);
     }
 
-    public BasicResponseDto<List<MissionResponseDto>> showMission(Principal principal){
+    public BasicResponseDto<List<MissionResponseDto>> showMission(Principal principal) {
         Account account = get_account(principal);
         List<CategoryAccount> categoryAccounts = categoryAccountRepository.findByAccount(account);
         List<MissionResponseDto> randomMission = result;
         List<MissionResponseDto> result = randomMission.stream()
-                .filter(e-> {
+                .filter(e -> {
                     return categoryAccounts.stream().anyMatch(ca -> e.getCategory().equals(ca.getCategory().getCategory()));
                 }).collect(Collectors.toList());
-        return new BasicResponseDto<>(200,"showmission",result);
+        return new BasicResponseDto<>(200, "showmission", result);
     }
 
     @Transactional
-    public BasicResponseDto<Void> successClick(Long missionId, Principal principal){
+    public BasicResponseDto<Void> successClick(Long missionId, Principal principal) {
         Account account = get_account(principal);
         LocalDateTime start = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0, 0));
         LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
-        List<Success> success = successRepository.findSuccessToday(start,end);
+        List<Success> success = successRepository.findSuccessToday(start, end);
         Success today = success.stream().filter(e -> e.getAccount() == account).findFirst().get();
         log.info("유저 {}", today.getAccount().getUsername());
-        for(int i = 0; i < result.size(); i++){
-            if(result.get(i).getId() == missionId){
-                if(result.get(i).getIsSuccess() == false){
+        for (int i = 0; i < result.size(); i++) {
+            if (result.get(i).getId() == missionId) {
+                if (result.get(i).getIsSuccess() == false) {
                     result.get(i).setIsSuccess(true);
                     today.addsuccess();
-                    log.info("성공 {}",today.getCount());
-                } else{
+                    log.info("성공 {}", today.getCount());
+                } else {
                     result.get(i).setIsSuccess(false);
                     today.deletesuccess();
-                    log.info("실패 {}",today.getCount());
+                    log.info("실패 {}", today.getCount());
                 }
             }
         }
-        return new BasicResponseDto<>(200,"mission_clear",null);
+        return new BasicResponseDto<>(200, "mission_clear", null);
     }
 
     @Scheduled(cron = "0 5 23 * * *")
     @Transactional(readOnly = true)
-    public void randommission(){
-        long random = (int)(Math.random()*4)+1;
-        for(int i = 0; i < 5; i++){
+    public void randommission() {
+        long random = (int) (Math.random() * 4) + 1;
+        for (int i = 0; i < 5; i++) {
             Optional<Mission> mission = missionRepository.findById(random);
-            if(!mission.isPresent()){
+            if (!mission.isPresent()) {
                 throw new IllegalStateException();
             }
             MissionResponseDto missionResponseDto = entityToDto(mission.get());
@@ -111,32 +111,33 @@ public class MissionService {
             log.info("미션 이름 {}", missionResponseDto.getCategory().getKorean());
         }
     }
-    public BasicResponseDto<List<Success>> successList(Principal principal){
+
+    public BasicResponseDto<List<Success>> successList(Principal principal) {
         Account account = get_account(principal);
         LocalDateTime start = LocalDateTime.of(LocalDate.now().minusDays(7), LocalTime.of(0, 0, 0));
         LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
-        List<Success> successList = successRepository.findSuccessTopSevenDay(start,end);
+        List<Success> successList = successRepository.findSuccessTopSevenDay(start, end);
         List<Success> result = successList.stream().filter(e -> e.getAccount() == account).collect(Collectors.toList());
-        return new  BasicResponseDto<>(200,"SUCCESS_LIST",result);
+        return new BasicResponseDto<>(200, "SUCCESS_LIST", result);
     }
 
-    public BasicResponseDto<List<Long>> successListCount(Principal principal){
+    public BasicResponseDto<List<Long>> successListCount(Principal principal) {
         Account account = get_account(principal);
         LocalDateTime start = LocalDateTime.of(LocalDate.now().minusDays(7), LocalTime.of(0, 0, 0));
         LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
-        List<Success> successList = successRepository.findSuccessTopSevenDay(start,end);
+        List<Success> successList = successRepository.findSuccessTopSevenDay(start, end);
 //        List<Success> result = successList.stream().filter(e -> e.getAccount() == account).collect(Collectors.toList());
         List<Long> result = successList.stream().filter(e -> e.getAccount() == account)
                 .map(Success::getCount)
                 .collect(Collectors.toList());
-        return new  BasicResponseDto<>(200,"SUCCESS_LIST",result);
+        return new BasicResponseDto<>(200, "SUCCESS_LIST", result);
     }
 
-    public BasicResponseDto<List<CategoryResponseDto>> getCategoris(Principal principal){
+    public BasicResponseDto<List<CategoryResponseDto>> getCategoris(Principal principal) {
         Account account = get_account(principal);
         LocalDateTime start = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0, 0));
         LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
-        List<CategoryAccount> checkedCategoryAccount = categoryAccountRepository.findCategoryAccountToday(start,end);
+        List<CategoryAccount> checkedCategoryAccount = categoryAccountRepository.findCategoryAccountToday(start, end);
         List<CategoryAccount> today = checkedCategoryAccount.stream().filter(e -> e.getAccount() == account).collect(Collectors.toList());
         List<Category> checkedCategories = today.stream()
                 .map(CategoryAccount::getCategory)
@@ -162,6 +163,7 @@ public class MissionService {
                 .isSuccess(false)
                 .build();
     }
+
     public Mission dtoToEntity(MissionResponseDto dto) {
         return Mission.builder()
                 .id(dto.getId())

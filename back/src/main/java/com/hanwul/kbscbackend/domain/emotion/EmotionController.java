@@ -4,7 +4,6 @@ import com.hanwul.kbscbackend.dto.BasicResponseDto;
 import com.hanwul.kbscbackend.dto.EmotionSearchDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -25,7 +24,7 @@ public class EmotionController {
     }
 
     @GetMapping("/top")
-    public BasicResponseDto<List<EmotionDto>> getTop(Principal principal){
+    public BasicResponseDto<List<EmotionDto>> getTop(Principal principal) {
         return emotionService.getTopLikes(principal);
     }
 
@@ -40,18 +39,18 @@ public class EmotionController {
     }
 
     @PutMapping("/{emotionId}")
-    public BasicResponseDto<Long> updatePost(@PathVariable Long emotionId, @RequestBody EmotionDto emotionDto, Principal principal){
+    public BasicResponseDto<Long> updatePost(@PathVariable Long emotionId, @RequestBody EmotionDto emotionDto, Principal principal) {
         return emotionService.modify(emotionId, emotionDto, principal);
     }
 
     @DeleteMapping("/{emotionId}")
-    public BasicResponseDto<Void> deletePost(@PathVariable Long emotionId, Principal principal){
+    public BasicResponseDto<Void> deletePost(@PathVariable Long emotionId, Principal principal) {
         return emotionService.delete(emotionId, principal);
     }
 
     // 좋아요
     @GetMapping("/{emotionId}/like")
-    public BasicResponseDto<Void> likePost(@PathVariable Long emotionId, Principal principal){
+    public BasicResponseDto<Void> likePost(@PathVariable Long emotionId, Principal principal) {
         return emotionService.like(emotionId, principal);
     }
 }

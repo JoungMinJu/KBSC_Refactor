@@ -1,6 +1,5 @@
 package com.hanwul.kbscbackend.domain.answer;
 
-import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.hanwul.kbscbackend.domain.account.Account;
 import com.hanwul.kbscbackend.domain.account.AccountRepository;
 import com.hanwul.kbscbackend.domain.questionanswer.question.Question;
@@ -15,14 +14,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -87,7 +84,7 @@ public class AnswerService {
         List<Answer> result =
                 answerRepository.findByQuestionAndAccountAndCreatedDateTimeBetween(question, account, start, end);
         List<AnswerDto> resultDtos = getDtoList(result);
-        if(resultDtos.size() < 1){
+        if (resultDtos.size() < 1) {
             AnswerDto build = getTempDto(question);
             resultDtos.add(build);
         }

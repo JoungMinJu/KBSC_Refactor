@@ -8,13 +8,10 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import io.findify.s3mock.S3Mock;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import lombok.Builder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.annotation.PostConstruct;
@@ -36,7 +33,7 @@ public class EmbeddedS3Config {
     private int port;
 
     @Bean
-    public S3Mock s3Mock(){
+    public S3Mock s3Mock() {
         return new S3Mock.Builder()
                 .withPort(port) // 해당 포트에 프로세스가 생성
                 .withInMemoryBackend() // 인메모리에서 활성화
@@ -44,21 +41,21 @@ public class EmbeddedS3Config {
     }
 
     @PostConstruct // 의존성 주입이 이뤄진 후 임베디드 S3 서브를 가동
-    public void startS3Mock() throws IOException{
-        port  = ProcessUtils.isRunningPort(port) ? ProcessUtils.findAvailabelRandomPort() : port;
+    public void startS3Mock() throws IOException {
+        port = ProcessUtils.isRunningPort(port) ? ProcessUtils.findAvailabelRandomPort() : port;
         this.s3Mock().start();
         log.info("인메모리 S3 Mock 서버가 시작됩니다. port : {}", port);
     }
 
     @PreDestroy
-    public void destroyS3Mock(){
+    public void destroyS3Mock() {
         this.s3Mock().shutdown();
         log.info("인메모리 S3 Mock 서버가 종료됩니다. port : {}", port);
     }
 
     @Bean
     @Primary
-    public AmazonS3 amazonS3Client(){
+    public AmazonS3 amazonS3Client() {
         AwsClientBuilder.EndpointConfiguration endpoint = new AwsClientBuilder.EndpointConfiguration(getUri(), region);
         AmazonS3 client = AmazonS3ClientBuilder
                 .standard()
@@ -70,7 +67,7 @@ public class EmbeddedS3Config {
         return client;
     }
 
-    private String getUri(){
+    private String getUri() {
         return UriComponentsBuilder.newInstance()
                 .scheme("http")
                 .host("localhost")

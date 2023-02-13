@@ -1,9 +1,6 @@
 package com.hanwul.kbscbackend.domain.account;
 
-import com.hanwul.kbscbackend.domain.answer.Answer;
 import com.hanwul.kbscbackend.domain.chat.room.ChatRoom;
-import com.hanwul.kbscbackend.domain.emotion.Emotion;
-import com.hanwul.kbscbackend.domain.emotion.EmotionLike;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,7 +26,6 @@ public class Account implements UserDetails {
 
     @Column(length = 45, unique = true)
     private String username;
-
     private String password;
 
     @Column(length = 45, unique = true)

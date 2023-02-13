@@ -2,7 +2,6 @@ package com.hanwul.kbscbackend.exception.handler.advice;
 
 import com.hanwul.kbscbackend.exception.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -32,48 +31,49 @@ public class ExControllerAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(WrongQuestionId.class)
-    public ErrorResult wrongQuestionId(IllegalArgumentException e){
+    public ErrorResult wrongQuestionId(IllegalArgumentException e) {
         return new ErrorResult(ExceptionCode.WRONG_QUESTION_ID);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(WrongAnswerId.class)
-    public ErrorResult wrongAnswerId(IllegalArgumentException e){
+    public ErrorResult wrongAnswerId(IllegalArgumentException e) {
         return new ErrorResult(ExceptionCode.WRONG_ANSWER_ID);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(NotMyAnswer.class)
-    public ErrorResult notMyAnswer(IllegalArgumentException e){
-        return new ErrorResult(ExceptionCode.NOT_MY_ANSWER);}
+    public ErrorResult notMyAnswer(IllegalArgumentException e) {
+        return new ErrorResult(ExceptionCode.NOT_MY_ANSWER);
+    }
 
     @ExceptionHandler(WrongEmotionId.class)
-    public ErrorResult wrongEmotionId(IllegalArgumentException e){
+    public ErrorResult wrongEmotionId(IllegalArgumentException e) {
         return new ErrorResult(ExceptionCode.NOT_FOUND_EMOTION);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(WrongMatchEmotion.class)
-    public ErrorResult wrongMatchEmotion(IllegalArgumentException e){
+    public ErrorResult wrongMatchEmotion(IllegalArgumentException e) {
         return new ErrorResult(ExceptionCode.WRONG_MATCH_EMOTION);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(WrongEmotionType.class)
-    public ErrorResult wrongEmotionType(IllegalArgumentException e){
+    public ErrorResult wrongEmotionType(IllegalArgumentException e) {
         return new ErrorResult(ExceptionCode.WRONG_EMOTION_TYPE);
 
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(WrongMatchMission.class)
-    public ErrorResult wrongMatchMission(IllegalArgumentException e){
-        return new  ErrorResult(ExceptionCode.WRONG_MATCH_MISSION);
+    public ErrorResult wrongMatchMission(IllegalArgumentException e) {
+        return new ErrorResult(ExceptionCode.WRONG_MATCH_MISSION);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(WrongCategoryId.class)
-    public ErrorResult wrongCategoryId(IllegalArgumentException e){
+    public ErrorResult wrongCategoryId(IllegalArgumentException e) {
         return new ErrorResult(ExceptionCode.WRONG_CATEGORY_ID);
     }
 

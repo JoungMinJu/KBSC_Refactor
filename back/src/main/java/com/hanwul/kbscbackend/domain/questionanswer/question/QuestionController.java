@@ -1,6 +1,5 @@
 package com.hanwul.kbscbackend.domain.questionanswer.question;
 
-import com.hanwul.kbscbackend.domain.questionanswer.question.QuestionService;
 import com.hanwul.kbscbackend.dto.BasicResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +17,7 @@ public class QuestionController {
     private final QuestionService questionService;
 
     @GetMapping
-    public BasicResponseDto<List<QuestionDto>> getAll(){
+    public BasicResponseDto<List<QuestionDto>> getAll() {
         return questionService.getAllList();
     }
 }

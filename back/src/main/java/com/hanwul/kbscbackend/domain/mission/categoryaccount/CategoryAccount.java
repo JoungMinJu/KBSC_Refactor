@@ -1,6 +1,5 @@
 package com.hanwul.kbscbackend.domain.mission.categoryaccount;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hanwul.kbscbackend.common.BaseEntity;
 import com.hanwul.kbscbackend.domain.account.Account;
 import com.hanwul.kbscbackend.domain.mission.category.Category;
