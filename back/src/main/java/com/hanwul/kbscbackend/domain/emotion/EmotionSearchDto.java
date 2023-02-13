@@ -1,4 +1,4 @@
-package com.hanwul.kbscbackend.dto;
+package com.hanwul.kbscbackend.domain.emotion;
 
 import lombok.Data;
 

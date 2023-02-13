@@ -1,7 +1,6 @@
 package com.hanwul.kbscbackend.domain.emotion;
 
 import com.hanwul.kbscbackend.dto.BasicResponseDto;
-import com.hanwul.kbscbackend.dto.EmotionSearchDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
