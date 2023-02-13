@@ -1,9 +1,7 @@
 package com.hanwul.kbscbackend.domain.account;
 
 import com.hanwul.kbscbackend.domain.chat.room.ChatRoom;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,6 +35,10 @@ public class Account implements UserDetails {
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<>();
+
+    public Account() {
+
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
