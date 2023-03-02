@@ -67,7 +67,10 @@ public class MissionService {
         List<MissionResponseDto> randomMission = result;
         List<MissionResponseDto> result = randomMission.stream()
                 .filter(e -> {
-                    return categoryAccounts.stream().anyMatch(ca -> e.getCategory().equals(ca.getCategory().getCategory()));
+                    return categoryAccounts.stream()
+                            .anyMatch(ca -> e.getCategory()
+                                    .equals(ca.getCategory()
+                                            .getCategory()));
                 }).collect(Collectors.toList());
         return new BasicResponseDto<>(200, "showmission", result);
     }

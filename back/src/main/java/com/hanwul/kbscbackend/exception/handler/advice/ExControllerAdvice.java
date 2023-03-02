@@ -47,6 +47,7 @@ public class ExControllerAdvice {
         return new ErrorResult(ExceptionCode.NOT_MY_ANSWER);
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(WrongEmotionId.class)
     public ErrorResult wrongEmotionId(IllegalArgumentException e) {
         return new ErrorResult(ExceptionCode.NOT_FOUND_EMOTION);

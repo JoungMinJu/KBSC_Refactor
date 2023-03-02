@@ -2,18 +2,13 @@ package com.hanwul.kbscbackend.domain.emotion;
 
 import com.hanwul.kbscbackend.common.BaseEntity;
 import com.hanwul.kbscbackend.domain.account.Account;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "emotion")
-@Builder
 @Entity
 public class Emotion extends BaseEntity {
 
@@ -46,5 +41,13 @@ public class Emotion extends BaseEntity {
 
     public void addLike() {
         this.count++;
+    }
+
+    @Builder
+    public Emotion( String content, Status status, Account account, Long count) {
+        this.content = content;
+        this.status = status;
+        this.account = account;
+        this.count = count;
     }
 }

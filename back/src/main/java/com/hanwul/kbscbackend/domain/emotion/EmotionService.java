@@ -4,7 +4,6 @@ package com.hanwul.kbscbackend.domain.emotion;
 import com.hanwul.kbscbackend.domain.account.Account;
 import com.hanwul.kbscbackend.domain.account.AccountRepository;
 import com.hanwul.kbscbackend.dto.BasicResponseDto;
-import com.hanwul.kbscbackend.dto.EmotionSearchDto;
 import com.hanwul.kbscbackend.exception.WrongEmotionId;
 import com.hanwul.kbscbackend.exception.WrongEmotionType;
 import com.hanwul.kbscbackend.exception.WrongMatchEmotion;
@@ -91,11 +90,10 @@ public class EmotionService {
 
     public Emotion dtoToEntity(EmotionDto emotionDto, Account account) {
         return Emotion.builder()
-                .id(emotionDto.getId())
+                .content(emotionDto.getContent())
                 .status(emotionDto.getStatus())
                 .account(account)
                 .count(emotionDto.getCount())
-                .content(emotionDto.getContent())
                 .build();
     }
 
