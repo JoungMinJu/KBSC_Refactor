@@ -6,6 +6,8 @@ import com.hanwul.kbscbackend.domain.mission.missionaccount.MissionAccount;
 import com.hanwul.kbscbackend.domain.mission.missionaccount.MissionAccountRepository;
 import com.hanwul.kbscbackend.domain.mission.success.Success;
 import com.hanwul.kbscbackend.domain.mission.success.SuccessRepository;
+import com.hanwul.kbscbackend.ex.InvalidInput;
+import com.hanwul.kbscbackend.ex.common.ExceptionTypes;
 import com.hanwul.kbscbackend.exception.UserException;
 import com.hanwul.kbscbackend.exception.WrongInputException;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +35,7 @@ public class AccountService {
     public Account save(SignUpDto signUpDto) {
         String username = signUpDto.getUsername();
         if (accountRepository.findByUsername(username).isPresent()) {
-            throw new UserException();
+            throw new InvalidInput("username", "중복된 user name", ExceptionTypes.ACCOUNT_SIGNUP);
         }
         Account account = accountRepository.save(toEntity(signUpDto));
         List<Mission> missions = missionRepository.findAll();
@@ -58,11 +60,9 @@ public class AccountService {
         // 입력받은 password
         String password = loginDto.getPassword();
         Account member = accountRepository.findByUsername(loginDto.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 Username 입니다."));
-        log.info("아이디 통과");
+                .orElseThrow(() -> new InvalidInput("username", "등록되지 않은 username", ExceptionTypes.ACCOUNT_LOGIN));
         if (!passwordEncoder.matches(password, member.getPassword())) {
-            log.info("비번틀림");
-            throw new WrongInputException();
+            throw new InvalidInput("password", "잘못된 password", ExceptionTypes.ACCOUNT_LOGIN);
         }
     }
 
