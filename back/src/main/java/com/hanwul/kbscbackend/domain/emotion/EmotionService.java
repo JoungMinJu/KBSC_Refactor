@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.hanwul.kbscbackend.exception.common.ExceptionOccurrencePackages.*;
+
 @Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -36,7 +38,7 @@ public class EmotionService {
 
     public BasicResponseDto<EmotionDto> read(Long emotionId) {
         Emotion emotion = emotionRepository.findById(emotionId)
-                .orElseThrow(() -> new WrongId(emotionId, ExceptionOccurrencePackages.EMOTION));
+                .orElseThrow(() -> new WrongId(EMOTION, "Emotion 객체 조회 오류"));
         EmotionDto emotionDto = entityToDto(emotion);
         return new BasicResponseDto<>(HttpStatus.OK.value(), "emotion", emotionDto);
     }
@@ -54,9 +56,9 @@ public class EmotionService {
     public BasicResponseDto<Long> modify(Long emotionID, EmotionDto emotionDto, Principal principal) {
         Account request_account = get_account(principal);
         Emotion emotion = emotionRepository.findById(emotionID)
-                .orElseThrow(() -> new WrongId(emotionID, ExceptionOccurrencePackages.EMOTION));
+                .orElseThrow(() -> new WrongId(EMOTION, "Emotion 객체 조회 오류"));
         if (emotion.getAccount().getId() != request_account.getId()) {
-            throw new NoAuthorization(emotionID, HttpMethod.PUT, ExceptionOccurrencePackages.EMOTION);
+            throw new NoAuthorization(EMOTION, "Emotion 객체 오류");
         }
         emotion.changeContent(emotionDto.getContent());
         emotion.changeStatus(emotionDto.getStatus());
@@ -72,9 +74,9 @@ public class EmotionService {
     public BasicResponseDto<Void> delete(Long id, Principal principal) {
         Account account = get_account(principal);
         Emotion emotion = emotionRepository.findById(id)
-                .orElseThrow(() -> new WrongId(id, ExceptionOccurrencePackages.EMOTION));
+                .orElseThrow(() -> new WrongId(EMOTION, "Emotion 객체 조회 오류"));
         if (emotion.getAccount().getId() != account.getId()) {
-            throw new NoAuthorization(id, HttpMethod.PUT, ExceptionOccurrencePackages.EMOTION);
+            throw new NoAuthorization(EMOTION, "Emotion 객체 오류");
         }
         emotionRepository.deleteById(id);
         emotionLikeRepository.deleteByAccount(account);
@@ -113,7 +115,7 @@ public class EmotionService {
             // public 한 애들 -> 시간 순
             result = emotionRepository.findAllPublicStatus(Sort.by("createdDateTime").descending());
         } else {
-            throw new InvalidInput("emotion", "타입이 PRIVATE이거나 PUBLIC 이어야함", ExceptionOccurrencePackages.EMOTION);
+            throw new InvalidInput(EMOTION,"타입이 PRIVATE이거나 PUBLIC 이어야함");
         }
         List<EmotionDto> emotionDtos = result.stream().map(emotion -> entityToDto(emotion))
                 .collect(Collectors.toList());
@@ -132,7 +134,7 @@ public class EmotionService {
     public BasicResponseDto<Void> like(Long emotionId, Principal principal) {
         Account account = get_account(principal);
         Emotion emotion = emotionRepository.findById(emotionId)
-                .orElseThrow(() -> new WrongId(emotionId, ExceptionOccurrencePackages.EMOTION));
+                .orElseThrow(() -> new WrongId(EMOTION, "Emotion 객체 조회 오류"));
         Optional<EmotionLike> byAccountAndEmotion = emotionLikeRepository.findByAccountAndEmotion(account, emotion);
         byAccountAndEmotion.ifPresentOrElse(
                 emotionLike -> {
