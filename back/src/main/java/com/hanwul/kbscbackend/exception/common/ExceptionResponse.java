@@ -1,4 +1,4 @@
-package com.hanwul.kbscbackend.exception;
+package com.hanwul.kbscbackend.exception.common;
 
 public class ExceptionResponse {
     private String errorCode;

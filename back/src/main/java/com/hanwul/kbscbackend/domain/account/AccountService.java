@@ -7,7 +7,7 @@ import com.hanwul.kbscbackend.domain.mission.missionaccount.MissionAccountReposi
 import com.hanwul.kbscbackend.domain.mission.success.Success;
 import com.hanwul.kbscbackend.domain.mission.success.SuccessRepository;
 import com.hanwul.kbscbackend.exception.InvalidInput;
-import com.hanwul.kbscbackend.exception.ExceptionTypes;
+import com.hanwul.kbscbackend.exception.common.ExceptionTypes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;

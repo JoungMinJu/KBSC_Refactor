@@ -1,5 +1,6 @@
 package com.hanwul.kbscbackend.exception;
 
+import com.hanwul.kbscbackend.exception.common.ExceptionTypes;
 import org.springframework.http.HttpStatus;
 
 public class InvalidInput extends RuntimeException{

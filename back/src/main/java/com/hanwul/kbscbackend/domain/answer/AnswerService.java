@@ -7,7 +7,7 @@ import com.hanwul.kbscbackend.domain.questionanswer.question.QuestionRepository;
 import com.hanwul.kbscbackend.dto.BasicResponseDto;
 import com.hanwul.kbscbackend.exception.NoAuthorization;
 import com.hanwul.kbscbackend.exception.WrongId;
-import com.hanwul.kbscbackend.exception.ExceptionTypes;
+import com.hanwul.kbscbackend.exception.common.ExceptionTypes;
 import com.hanwul.kbscbackend.exception.WrongQuestionId;
 import com.hanwul.kbscbackend.file.aws.FileUploadService;
 import lombok.RequiredArgsConstructor;
