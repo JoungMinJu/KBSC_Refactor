@@ -7,8 +7,8 @@ public class WrongId extends RuntimeException {
     private String occurrencePackages;
     private HttpStatus httpStatus;
 
-    public WrongId(ExceptionOccurrencePackages occurrencePackages, String additionalInformation) {
-        super("ID에 해당하는 객체가 존재하지 않음 " + occurrencePackages);
+    public WrongId(ExceptionOccurrencePackages occurrencePackages, String detailInformation) {
+        super("ID에 해당하는 객체가 존재하지 않음 " + detailInformation);
         this.httpStatus = HttpStatus.NOT_FOUND;
         this.occurrencePackages = occurrencePackages.toString();
     }

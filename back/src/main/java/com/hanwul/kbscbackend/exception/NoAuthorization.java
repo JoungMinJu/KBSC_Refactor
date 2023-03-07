@@ -9,8 +9,8 @@ public class NoAuthorization extends RuntimeException{
     private HttpStatus httpStatus;
     private String hint;
 
-    public NoAuthorization(ExceptionOccurrencePackages occurrencePackages, String additionalInformation) {
-        super("요청에 대한 권한이 없음 " + additionalInformation);
+    public NoAuthorization(ExceptionOccurrencePackages occurrencePackages, String detailInformation) {
+        super("요청에 대한 권한이 없음 " + detailInformation);
         this.httpStatus = HttpStatus.FORBIDDEN;
         this.occurrencePackages = occurrencePackages.toString();
     }
