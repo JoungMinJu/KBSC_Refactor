@@ -10,7 +10,8 @@ import com.hanwul.kbscbackend.domain.mission.categoryaccount.CategoryAccountRepo
 import com.hanwul.kbscbackend.domain.mission.success.Success;
 import com.hanwul.kbscbackend.domain.mission.success.SuccessRepository;
 import com.hanwul.kbscbackend.dto.BasicResponseDto;
-import com.hanwul.kbscbackend.exception.WrongCategoryId;
+import com.hanwul.kbscbackend.exception.WrongId;
+import com.hanwul.kbscbackend.exception.common.ExceptionOccurrencePackages;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.hanwul.kbscbackend.exception.common.ExceptionOccurrencePackages.*;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -43,11 +46,8 @@ public class MissionService {
     @Transactional
     public BasicResponseDto<Void> toggleClick(Long categoryId, Principal principal) {
         Account account = get_account(principal);
-        Optional<Category> byId = categoryRepository.findById(categoryId);
-        if (byId.isEmpty()) {
-            throw new WrongCategoryId();
-        }
-        Category category = byId.get();
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new WrongId(MISSION, "Category 객체 조회 오류"));
         Optional<CategoryAccount> categoryAccount = categoryAccountRepository.findByAccountAndCategory(account, category);
         categoryAccount.ifPresentOrElse(
                 ca -> {
@@ -104,11 +104,10 @@ public class MissionService {
     public void randommission() {
         long random = (int) (Math.random() * 4) + 1;
         for (int i = 0; i < 5; i++) {
-            Optional<Mission> mission = missionRepository.findById(random);
-            if (!mission.isPresent()) {
-                throw new IllegalStateException();
-            }
-            MissionResponseDto missionResponseDto = entityToDto(mission.get());
+            long finalRandom = random;
+            Mission mission = missionRepository.findById(random)
+                    .orElseThrow(() -> new WrongId(MISSION, "Mission 객체 조회 오류"));
+            MissionResponseDto missionResponseDto = entityToDto(mission);
             result.add(missionResponseDto);
             random = random + 5;
             log.info("미션 이름 {}", missionResponseDto.getCategory().getKorean());

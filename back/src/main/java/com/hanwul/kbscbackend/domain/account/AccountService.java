@@ -6,8 +6,7 @@ import com.hanwul.kbscbackend.domain.mission.missionaccount.MissionAccount;
 import com.hanwul.kbscbackend.domain.mission.missionaccount.MissionAccountRepository;
 import com.hanwul.kbscbackend.domain.mission.success.Success;
 import com.hanwul.kbscbackend.domain.mission.success.SuccessRepository;
-import com.hanwul.kbscbackend.exception.UserException;
-import com.hanwul.kbscbackend.exception.WrongInputException;
+import com.hanwul.kbscbackend.exception.InvalidInput;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.hanwul.kbscbackend.exception.common.ExceptionOccurrencePackages.ACCOUNT;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -33,7 +34,7 @@ public class AccountService {
     public Account save(SignUpDto signUpDto) {
         String username = signUpDto.getUsername();
         if (accountRepository.findByUsername(username).isPresent()) {
-            throw new UserException();
+            throw new InvalidInput(ACCOUNT, "중복된 user name");
         }
         Account account = accountRepository.save(toEntity(signUpDto));
         List<Mission> missions = missionRepository.findAll();
@@ -58,11 +59,9 @@ public class AccountService {
         // 입력받은 password
         String password = loginDto.getPassword();
         Account member = accountRepository.findByUsername(loginDto.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 Username 입니다."));
-        log.info("아이디 통과");
+                .orElseThrow(() -> new InvalidInput(ACCOUNT, "등록되지 않은 username"));
         if (!passwordEncoder.matches(password, member.getPassword())) {
-            log.info("비번틀림");
-            throw new WrongInputException();
+            throw new InvalidInput(ACCOUNT, "잘못된 password");
         }
     }
 

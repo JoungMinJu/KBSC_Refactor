@@ -4,6 +4,8 @@ import com.hanwul.kbscbackend.domain.account.Account;
 import com.hanwul.kbscbackend.domain.account.AccountRepository;
 import com.hanwul.kbscbackend.domain.rate.RateRepository;
 import com.hanwul.kbscbackend.dto.BasicResponseDto;
+import com.hanwul.kbscbackend.exception.WrongId;
+import com.hanwul.kbscbackend.exception.common.ExceptionOccurrencePackages;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -12,8 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.hanwul.kbscbackend.exception.common.ExceptionOccurrencePackages.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -34,11 +37,8 @@ public class ChatRoomService {
     }
 
     public BasicResponseDto<ChatRoomDto> read(Long chatRoomId) {
-        Optional<ChatRoom> result = chatRoomRepository.findById(chatRoomId);
-        if (result.isEmpty()) {
-            throw new IllegalArgumentException("해당 ID의 채팅룸 없음");
-        }
-        ChatRoom chatRoom = result.get();
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
+                .orElseThrow(() -> new WrongId(CHAT, "ChatRoom 조회 오류"));
         ChatRoomDto chatRoomDto = entityToDto(chatRoom);
         return new BasicResponseDto<>(HttpStatus.OK.value(), "chatRoom", chatRoomDto);
     }
