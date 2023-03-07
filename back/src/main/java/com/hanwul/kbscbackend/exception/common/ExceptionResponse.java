@@ -1,5 +1,8 @@
 package com.hanwul.kbscbackend.exception.common;
 
+import lombok.Getter;
+
+@Getter
 public class ExceptionResponse {
     private String statusCode;
     private String statusCodePhrase;
