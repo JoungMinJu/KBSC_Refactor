@@ -1,15 +1,13 @@
-package com.hanwul.kbscbackend.ex;
+package com.hanwul.kbscbackend.exception;
 
-import com.hanwul.kbscbackend.ex.common.ExceptionTypes;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 
-public class NoAuthorization extends RuntimeException{
+public class InvalidInput extends RuntimeException{
     private HttpStatus httpStatus;
     private String hint;
 
-    public NoAuthorization(long id, HttpMethod method, ExceptionTypes exceptionTypes) {
-        super(id + "의 Entity에 대한 " + method.name() + " 권한이 없습니다.");
+    public InvalidInput(String target, String reason, ExceptionTypes exceptionTypes) {
+        super("유효하지 않은 " + target + " 값. [이유] " + reason);
         this.hint = exceptionTypes.toString();
         this.httpStatus = HttpStatus.FORBIDDEN;
     }

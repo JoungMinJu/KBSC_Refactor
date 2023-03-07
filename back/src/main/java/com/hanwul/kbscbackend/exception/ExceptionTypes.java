@@ -1,4 +1,4 @@
-package com.hanwul.kbscbackend.ex.common;
+package com.hanwul.kbscbackend.exception;
 
 public enum ExceptionTypes {
     ACCOUNT_LOGIN("Account Login"),

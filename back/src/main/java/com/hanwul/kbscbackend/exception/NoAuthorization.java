@@ -1,16 +1,16 @@
-package com.hanwul.kbscbackend.ex;
+package com.hanwul.kbscbackend.exception;
 
-import com.hanwul.kbscbackend.ex.common.ExceptionTypes;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 
-public class WrongId extends RuntimeException {
+public class NoAuthorization extends RuntimeException{
     private HttpStatus httpStatus;
     private String hint;
 
-    public WrongId(long id, ExceptionTypes exceptionTypes) {
-        super(id + "의 Entity가 존재하지 않습니다.");
+    public NoAuthorization(long id, HttpMethod method, ExceptionTypes exceptionTypes) {
+        super(id + "의 Entity에 대한 " + method.name() + " 권한이 없습니다.");
         this.hint = exceptionTypes.toString();
-        this.httpStatus = HttpStatus.NOT_FOUND;
+        this.httpStatus = HttpStatus.FORBIDDEN;
     }
 
     public int getHttpStatusCode() {
