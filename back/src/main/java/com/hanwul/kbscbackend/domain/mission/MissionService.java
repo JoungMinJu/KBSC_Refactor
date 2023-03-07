@@ -11,7 +11,7 @@ import com.hanwul.kbscbackend.domain.mission.success.Success;
 import com.hanwul.kbscbackend.domain.mission.success.SuccessRepository;
 import com.hanwul.kbscbackend.dto.BasicResponseDto;
 import com.hanwul.kbscbackend.exception.WrongId;
-import com.hanwul.kbscbackend.exception.common.ExceptionTypes;
+import com.hanwul.kbscbackend.exception.common.ExceptionOccurrencePackages;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -45,7 +45,7 @@ public class MissionService {
     public BasicResponseDto<Void> toggleClick(Long categoryId, Principal principal) {
         Account account = get_account(principal);
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new WrongId(categoryId, ExceptionTypes.MISSION));
+                .orElseThrow(() -> new WrongId(categoryId, ExceptionOccurrencePackages.MISSION));
         Optional<CategoryAccount> categoryAccount = categoryAccountRepository.findByAccountAndCategory(account, category);
         categoryAccount.ifPresentOrElse(
                 ca -> {
@@ -104,7 +104,7 @@ public class MissionService {
         for (int i = 0; i < 5; i++) {
             long finalRandom = random;
             Mission mission = missionRepository.findById(random)
-                    .orElseThrow(() -> new WrongId(finalRandom, ExceptionTypes.MISSION));
+                    .orElseThrow(() -> new WrongId(finalRandom, ExceptionOccurrencePackages.MISSION));
             MissionResponseDto missionResponseDto = entityToDto(mission);
             result.add(missionResponseDto);
             random = random + 5;

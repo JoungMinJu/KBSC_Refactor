@@ -7,7 +7,7 @@ import com.hanwul.kbscbackend.domain.questionanswer.question.QuestionRepository;
 import com.hanwul.kbscbackend.dto.BasicResponseDto;
 import com.hanwul.kbscbackend.exception.NoAuthorization;
 import com.hanwul.kbscbackend.exception.WrongId;
-import com.hanwul.kbscbackend.exception.common.ExceptionTypes;
+import com.hanwul.kbscbackend.exception.common.ExceptionOccurrencePackages;
 import com.hanwul.kbscbackend.exception.WrongQuestionId;
 import com.hanwul.kbscbackend.file.aws.FileUploadService;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +44,7 @@ public class AnswerService {
     public BasicResponseDto<Long> create(Long questionId, AnswerDto answerDto, Principal principal) {
         Account account = get_account(principal);
         Question question = questionRepository.findById(questionId)
-                .orElseThrow(() -> new WrongId(questionId, ExceptionTypes.ANSWER));
+                .orElseThrow(() -> new WrongId(questionId, ExceptionOccurrencePackages.ANSWER));
         answerDto.setQuestion(question.getContent());
         Answer answer = dtoToEntity(answerDto, account);
         answerRepository.save(answer);
@@ -55,7 +55,7 @@ public class AnswerService {
     // answerId로 가져오기
     public BasicResponseDto<AnswerDto> findAnswer(Long answerId) {
         Answer answer = answerRepository.findById(answerId)
-                .orElseThrow(() -> new WrongId(answerId, ExceptionTypes.ANSWER));
+                .orElseThrow(() -> new WrongId(answerId, ExceptionOccurrencePackages.ANSWER));
         AnswerDto dto = entityToDTO(answer);
         return new BasicResponseDto<>(HttpStatus.OK.value(), "answer", dto);
     }
@@ -72,7 +72,7 @@ public class AnswerService {
         LocalDateTime end = endDate.atTime(LocalTime.MAX);
 
         Question question = questionRepository.findById(questionId)
-                .orElseThrow(() -> new WrongId(questionId, ExceptionTypes.QUESTION));
+                .orElseThrow(() -> new WrongId(questionId, ExceptionOccurrencePackages.QUESTION));
         Account account = get_account(principal);
         List<Answer> result =
                 answerRepository.findByQuestionAndAccountAndCreatedDateTimeBetween(question, account, start, end);
@@ -99,7 +99,7 @@ public class AnswerService {
         LocalDateTime end = localDate.atTime(LocalTime.MAX);
 
         Question question = questionRepository.findById(questionId)
-                .orElseThrow(() -> new WrongId(questionId, ExceptionTypes.QUESTION));
+                .orElseThrow(() -> new WrongId(questionId, ExceptionOccurrencePackages.QUESTION));
         Account account = get_account(principal);
         List<Answer> result =
                 answerRepository.findByQuestionAndAccountAndCreatedDateTimeBetween(question, account, start, end);
@@ -139,9 +139,9 @@ public class AnswerService {
     public BasicResponseDto<AnswerDto> modify(Long answerId, AnswerDto answerDto, Principal principal) {
         Account request_account = get_account(principal);
         Answer answer = answerRepository.findById(answerId)
-                .orElseThrow(() -> new WrongId(answerId, ExceptionTypes.ANSWER));
+                .orElseThrow(() -> new WrongId(answerId, ExceptionOccurrencePackages.ANSWER));
         if (answer.getAccount().getId() != request_account.getId()) {
-            throw new NoAuthorization(answerId, HttpMethod.PUT, ExceptionTypes.ANSWER);
+            throw new NoAuthorization(answerId, HttpMethod.PUT, ExceptionOccurrencePackages.ANSWER);
         }
         answer.changeAnswer(answerDto.getAnswer());
         AnswerDto answerDto1 = entityToDTO(answer);
@@ -152,9 +152,9 @@ public class AnswerService {
     public BasicResponseDto<Void> delete(Long answerId, Principal principal) {
         Account account = get_account(principal);
         Answer answer = answerRepository.findById(answerId)
-                .orElseThrow(() -> new WrongId(answerId, ExceptionTypes.ANSWER));
+                .orElseThrow(() -> new WrongId(answerId, ExceptionOccurrencePackages.ANSWER));
         if (answer.getAccount().getId() != account.getId()) {
-            throw new NoAuthorization(answerId, HttpMethod.PUT, ExceptionTypes.ANSWER);
+            throw new NoAuthorization(answerId, HttpMethod.PUT, ExceptionOccurrencePackages.ANSWER);
         }
         answerRepository.deleteById(answerId);
         return new BasicResponseDto<>(HttpStatus.OK.value(), "answer", null);

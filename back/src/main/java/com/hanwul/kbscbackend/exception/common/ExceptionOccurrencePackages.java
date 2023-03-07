@@ -1,6 +1,6 @@
 package com.hanwul.kbscbackend.exception.common;
 
-public enum ExceptionTypes {
+public enum ExceptionOccurrencePackages {
     ACCOUNT_LOGIN("Account Login"),
     ACCOUNT_SIGNUP("Account Signup"),
     ANSWER("Answer"),
@@ -9,15 +9,15 @@ public enum ExceptionTypes {
     MISSION("Mission"),
     QUESTION("Question");
 
-    private String exceptionClass;
+    private String occurrencePackageName;
 
-    ExceptionTypes(String exceptionClass) {
-        this.exceptionClass = exceptionClass;
+    ExceptionOccurrencePackages(String occurrencePackageName) {
+        this.occurrencePackageName = occurrencePackageName;
     }
 
 
     @Override
     public String toString() {
-        return exceptionClass + " Exception. ";
+        return occurrencePackageName + " package Exception. ";
     }
 }
