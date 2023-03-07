@@ -13,16 +13,16 @@ public class myExceptionHandler {
 
     @ExceptionHandler(value = WrongId.class)
     public ExceptionResponse wrongIdExceptionHandler(WrongId e) {
-        return new ExceptionResponse(e.getHttpStatusCode(), e.getHttpStatusType(), e.getHint(), e.getMessage());
+        return new ExceptionResponse(e.getHttpStatusCode(), e.getHttpStatusType(), e.getErrorOccurrencePackages(), e.getMessage());
     }
 
     @ExceptionHandler(value = NoAuthorization.class)
     public ExceptionResponse noAuthorizationExceptionHandler(NoAuthorization e) {
-        return new ExceptionResponse(e.getHttpStatusCode(), e.getHttpStatusType(), e.getHint(), e.getMessage());
+        return new ExceptionResponse(e.getHttpStatusCode(), e.getHttpStatusType(), e.getErrorOccurrencePackages(), e.getMessage());
     }
 
     @ExceptionHandler(value = InvalidInput.class)
     public ExceptionResponse invalidInputExceptionHandler(InvalidInput e) {
-        return new ExceptionResponse(e.getHttpStatusCode(), e.getHttpStatusType(), e.getHint(), e.getMessage());
+        return new ExceptionResponse(e.getHttpStatusCode(), e.getHttpStatusType(), e.getErrorOccurrencePackages(), e.getMessage());
     }
 }

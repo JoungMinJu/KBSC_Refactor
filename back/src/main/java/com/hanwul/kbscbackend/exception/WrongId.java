@@ -4,13 +4,13 @@ import com.hanwul.kbscbackend.exception.common.ExceptionOccurrencePackages;
 import org.springframework.http.HttpStatus;
 
 public class WrongId extends RuntimeException {
+    private String errorOccurrencePackages;
     private HttpStatus httpStatus;
-    private String hint;
 
-    public WrongId(long id, ExceptionOccurrencePackages exceptionTypes) {
-        super(id + "의 Entity가 존재하지 않습니다.");
-        this.hint = exceptionTypes.toString();
+    public WrongId(ExceptionOccurrencePackages occurrencePackages, String additionalInformation) {
+        super("ID에 해당하는 객체가 존재하지 않음 " + additionalInformation);
         this.httpStatus = HttpStatus.NOT_FOUND;
+        this.errorOccurrencePackages = occurrencePackages.toString();
     }
 
     public int getHttpStatusCode() {
@@ -21,7 +21,7 @@ public class WrongId extends RuntimeException {
         return httpStatus.getReasonPhrase();
     }
 
-    public String getHint() {
-        return hint;
+    public String getErrorOccurrencePackages() {
+        return errorOccurrencePackages;
     }
 }
