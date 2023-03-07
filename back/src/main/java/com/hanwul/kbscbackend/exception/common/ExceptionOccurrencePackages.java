@@ -1,8 +1,7 @@
 package com.hanwul.kbscbackend.exception.common;
 
 public enum ExceptionOccurrencePackages {
-    ACCOUNT_LOGIN("Account Login"),
-    ACCOUNT_SIGNUP("Account Signup"),
+    ACCOUNT("Account"),
     ANSWER("Answer"),
     CHAT("Chat"),
     EMOTION("Emotion"),
