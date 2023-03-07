@@ -8,8 +8,6 @@ import com.hanwul.kbscbackend.domain.mission.success.Success;
 import com.hanwul.kbscbackend.domain.mission.success.SuccessRepository;
 import com.hanwul.kbscbackend.ex.InvalidInput;
 import com.hanwul.kbscbackend.ex.common.ExceptionTypes;
-import com.hanwul.kbscbackend.exception.UserException;
-import com.hanwul.kbscbackend.exception.WrongInputException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;

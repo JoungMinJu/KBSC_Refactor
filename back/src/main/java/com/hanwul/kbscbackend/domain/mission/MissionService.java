@@ -12,7 +12,6 @@ import com.hanwul.kbscbackend.domain.mission.success.SuccessRepository;
 import com.hanwul.kbscbackend.dto.BasicResponseDto;
 import com.hanwul.kbscbackend.ex.WrongId;
 import com.hanwul.kbscbackend.ex.common.ExceptionTypes;
-import com.hanwul.kbscbackend.exception.WrongCategoryId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

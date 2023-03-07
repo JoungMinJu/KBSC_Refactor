@@ -8,8 +8,6 @@ import com.hanwul.kbscbackend.dto.BasicResponseDto;
 import com.hanwul.kbscbackend.ex.NoAuthorization;
 import com.hanwul.kbscbackend.ex.WrongId;
 import com.hanwul.kbscbackend.ex.common.ExceptionTypes;
-import com.hanwul.kbscbackend.exception.NotMyAnswer;
-import com.hanwul.kbscbackend.exception.WrongAnswerId;
 import com.hanwul.kbscbackend.exception.WrongQuestionId;
 import com.hanwul.kbscbackend.file.aws.FileUploadService;
 import lombok.RequiredArgsConstructor;
