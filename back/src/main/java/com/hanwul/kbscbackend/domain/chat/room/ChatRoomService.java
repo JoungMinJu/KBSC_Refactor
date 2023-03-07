@@ -16,6 +16,8 @@ import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.hanwul.kbscbackend.exception.common.ExceptionOccurrencePackages.*;
+
 @Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -36,7 +38,7 @@ public class ChatRoomService {
 
     public BasicResponseDto<ChatRoomDto> read(Long chatRoomId) {
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
-                .orElseThrow(() -> new WrongId(chatRoomId, ExceptionOccurrencePackages.CHAT));
+                .orElseThrow(() -> new WrongId(CHAT, "ChatRoom 조회 오류"));
         ChatRoomDto chatRoomDto = entityToDto(chatRoom);
         return new BasicResponseDto<>(HttpStatus.OK.value(), "chatRoom", chatRoomDto);
     }
