@@ -7,12 +7,9 @@ import com.hanwul.kbscbackend.domain.questionanswer.question.QuestionRepository;
 import com.hanwul.kbscbackend.dto.BasicResponseDto;
 import com.hanwul.kbscbackend.exception.NoAuthorization;
 import com.hanwul.kbscbackend.exception.WrongId;
-import com.hanwul.kbscbackend.exception.common.ExceptionOccurrencePackages;
-import com.hanwul.kbscbackend.exception.WrongQuestionId;
 import com.hanwul.kbscbackend.file.aws.FileUploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +21,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.hanwul.kbscbackend.exception.common.ExceptionOccurrencePackages.*;
@@ -47,7 +43,8 @@ public class AnswerService {
         Account account = get_account(principal);
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new WrongId(ANSWER, "Question 객체 조회 오류"));
-        answerDto.setQuestion(question.getContent());
+        answerDto.setQuestion_id(questionId);
+        answerDto.setQuestion_content(question.getContent());
         Answer answer = dtoToEntity(answerDto, account);
         answerRepository.save(answer);
         return new BasicResponseDto<>(HttpStatus.OK.value(), "answer", answer.getId());
@@ -89,7 +86,8 @@ public class AnswerService {
     private AnswerDto getTempDto(Question question) {
         return AnswerDto.builder()
                 .id(question.getId())
-                .question(question.getContent())
+                .question_id(question.getId())
+                .question_content(question.getContent())
                 .answer("")
                 .build();
     }
@@ -168,11 +166,8 @@ public class AnswerService {
     }
 
     public Answer dtoToEntity(AnswerDto answerDto, Account account) {
-        Optional<Question> byContent = questionRepository.findByContent(answerDto.getQuestion());
-        if (byContent.isEmpty()) {
-            throw new WrongQuestionId();
-        }
-        Question question = byContent.get();
+        Question question = questionRepository.findById(answerDto.getQuestion_id())
+                .orElseThrow(() -> new WrongId(ANSWER, "Question 객체 조회 오류"));
         return Answer.builder()
                 .id(answerDto.getId())
                 .account(account)
@@ -185,7 +180,8 @@ public class AnswerService {
         return AnswerDto.builder()
                 .id(answer.getQuestion().getId())
                 .answer_id(answer.getId())
-                .question(answer.getQuestion().getContent())
+                .question_id(answer.getQuestion().getId())
+                .question_content(answer.getQuestion().getContent())
                 .answer(answer.getAnswer())
                 .build();
     }
