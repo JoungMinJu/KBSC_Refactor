@@ -1,15 +1,15 @@
 package com.hanwul.kbscbackend.exception.common;
 
 public class ExceptionResponse {
-    private String errorCode;
-    private String errorCodePhrase;
-    private String errorOccurrencePackage;
-    private String errorMessage;
+    private String statusCode;
+    private String statusCodePhrase;
+    private String occurrencePackage;
+    private String message;
 
-    public ExceptionResponse(int errorCode, String errorCodePhrase, String errorOccurrencePackage, String errorMessage) {
-        this.errorCode = String.valueOf(errorCode);
-        this.errorCodePhrase = errorCodePhrase;
-        this.errorOccurrencePackage = errorOccurrencePackage;
-        this.errorMessage = errorMessage;
+    public ExceptionResponse(int statusCode, String statusCodePhrase, String occurrencePackage, String message) {
+        this.statusCode = String.valueOf(statusCode);
+        this.statusCodePhrase = statusCodePhrase;
+        this.occurrencePackage = occurrencePackage;
+        this.message = message;
     }
 }

@@ -5,14 +5,14 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 
 public class NoAuthorization extends RuntimeException{
-    private String errorOccurrencePackages;
+    private String occurrencePackages;
     private HttpStatus httpStatus;
     private String hint;
 
     public NoAuthorization(ExceptionOccurrencePackages occurrencePackages, String additionalInformation) {
         super("요청에 대한 권한이 없음 " + additionalInformation);
         this.httpStatus = HttpStatus.FORBIDDEN;
-        this.errorOccurrencePackages = occurrencePackages.toString();
+        this.occurrencePackages = occurrencePackages.toString();
     }
 
     public int getHttpStatusCode() {
@@ -23,7 +23,7 @@ public class NoAuthorization extends RuntimeException{
         return httpStatus.getReasonPhrase();
     }
 
-    public String getErrorOccurrencePackages() {
-        return errorOccurrencePackages;
+    public String getOccurrencePackages() {
+        return occurrencePackages;
     }
 }
