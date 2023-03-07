@@ -5,12 +5,16 @@ import com.hanwul.kbscbackend.domain.account.AccountRepository;
 import com.hanwul.kbscbackend.domain.questionanswer.question.Question;
 import com.hanwul.kbscbackend.domain.questionanswer.question.QuestionRepository;
 import com.hanwul.kbscbackend.dto.BasicResponseDto;
+import com.hanwul.kbscbackend.ex.NoAuthorization;
+import com.hanwul.kbscbackend.ex.WrongId;
+import com.hanwul.kbscbackend.ex.common.ExceptionTypes;
 import com.hanwul.kbscbackend.exception.NotMyAnswer;
 import com.hanwul.kbscbackend.exception.WrongAnswerId;
 import com.hanwul.kbscbackend.exception.WrongQuestionId;
 import com.hanwul.kbscbackend.file.aws.FileUploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,11 +45,8 @@ public class AnswerService {
     @Transactional
     public BasicResponseDto<Long> create(Long questionId, AnswerDto answerDto, Principal principal) {
         Account account = get_account(principal);
-        Optional<Question> byId = questionRepository.findById(questionId);
-        if (byId.isEmpty()) {
-            throw new WrongQuestionId();
-        }
-        Question question = byId.get();
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new WrongId(questionId, ExceptionTypes.ANSWER));
         answerDto.setQuestion(question.getContent());
         Answer answer = dtoToEntity(answerDto, account);
         answerRepository.save(answer);
@@ -55,11 +56,8 @@ public class AnswerService {
 
     // answerId로 가져오기
     public BasicResponseDto<AnswerDto> findAnswer(Long answerId) {
-        Optional<Answer> result = answerRepository.findById(answerId);
-        if (result.isEmpty()) {
-            throw new IllegalArgumentException("같은 ID의 Answer 없음");
-        }
-        Answer answer = result.get();
+        Answer answer = answerRepository.findById(answerId)
+                .orElseThrow(() -> new WrongId(answerId, ExceptionTypes.ANSWER));
         AnswerDto dto = entityToDTO(answer);
         return new BasicResponseDto<>(HttpStatus.OK.value(), "answer", dto);
     }
@@ -75,11 +73,8 @@ public class AnswerService {
         LocalDateTime start = startDate.atStartOfDay();
         LocalDateTime end = endDate.atTime(LocalTime.MAX);
 
-        Optional<Question> byId = questionRepository.findById(questionId);
-        if (byId.isEmpty()) {
-            throw new WrongAnswerId();
-        }
-        Question question = byId.get();
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new WrongId(questionId, ExceptionTypes.QUESTION));
         Account account = get_account(principal);
         List<Answer> result =
                 answerRepository.findByQuestionAndAccountAndCreatedDateTimeBetween(question, account, start, end);
@@ -105,11 +100,8 @@ public class AnswerService {
         LocalDateTime start = localDate.atStartOfDay();
         LocalDateTime end = localDate.atTime(LocalTime.MAX);
 
-        Optional<Question> byId = questionRepository.findById(questionId);
-        if (byId.isEmpty()) {
-            throw new WrongQuestionId();
-        }
-        Question question = byId.get();
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new WrongId(questionId, ExceptionTypes.QUESTION));
         Account account = get_account(principal);
         List<Answer> result =
                 answerRepository.findByQuestionAndAccountAndCreatedDateTimeBetween(question, account, start, end);
@@ -148,13 +140,10 @@ public class AnswerService {
     @Transactional
     public BasicResponseDto<AnswerDto> modify(Long answerId, AnswerDto answerDto, Principal principal) {
         Account request_account = get_account(principal);
-        Optional<Answer> byId = answerRepository.findById(answerId);
-        if (byId.isEmpty()) {
-            throw new WrongAnswerId();
-        }
-        Answer answer = byId.get();
+        Answer answer = answerRepository.findById(answerId)
+                .orElseThrow(() -> new WrongId(answerId, ExceptionTypes.ANSWER));
         if (answer.getAccount().getId() != request_account.getId()) {
-            throw new NotMyAnswer();
+            throw new NoAuthorization(answerId, HttpMethod.PUT, ExceptionTypes.ANSWER);
         }
         answer.changeAnswer(answerDto.getAnswer());
         AnswerDto answerDto1 = entityToDTO(answer);
@@ -164,13 +153,10 @@ public class AnswerService {
     @Transactional
     public BasicResponseDto<Void> delete(Long answerId, Principal principal) {
         Account account = get_account(principal);
-        Optional<Answer> byId = answerRepository.findById(answerId);
-        if (byId.isEmpty()) {
-            throw new WrongAnswerId();
-        }
-        Answer answer = byId.get();
+        Answer answer = answerRepository.findById(answerId)
+                .orElseThrow(() -> new WrongId(answerId, ExceptionTypes.ANSWER));
         if (answer.getAccount().getId() != account.getId()) {
-            throw new NotMyAnswer();
+            throw new NoAuthorization(answerId, HttpMethod.PUT, ExceptionTypes.ANSWER);
         }
         answerRepository.deleteById(answerId);
         return new BasicResponseDto<>(HttpStatus.OK.value(), "answer", null);
