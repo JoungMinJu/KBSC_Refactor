@@ -17,6 +17,6 @@ public enum ExceptionOccurrencePackages {
 
     @Override
     public String toString() {
-        return occurrencePackageName + " package Exception. ";
+        return occurrencePackageName + " package Exception.";
     }
 }

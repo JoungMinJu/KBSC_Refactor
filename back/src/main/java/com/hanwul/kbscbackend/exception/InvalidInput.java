@@ -8,7 +8,7 @@ public class InvalidInput extends RuntimeException{
     private HttpStatus httpStatus;
 
     public InvalidInput(ExceptionOccurrencePackages occurrencePackages, String detailInformation) {
-        super("유효하지 않은 입력 값 " + detailInformation);
+        super("유효하지 않은 입력 값. [detail]" + detailInformation);
         this.httpStatus = HttpStatus.FORBIDDEN;
         this.occurrencePackages = occurrencePackages.toString();
     }
