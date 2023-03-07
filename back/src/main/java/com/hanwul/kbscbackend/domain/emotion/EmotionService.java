@@ -4,12 +4,18 @@ package com.hanwul.kbscbackend.domain.emotion;
 import com.hanwul.kbscbackend.domain.account.Account;
 import com.hanwul.kbscbackend.domain.account.AccountRepository;
 import com.hanwul.kbscbackend.dto.BasicResponseDto;
+import com.hanwul.kbscbackend.ex.InvalidInput;
+import com.hanwul.kbscbackend.ex.NoAuthorization;
+import com.hanwul.kbscbackend.ex.WrongId;
+import com.hanwul.kbscbackend.ex.common.ExceptionTypes;
 import com.hanwul.kbscbackend.exception.WrongEmotionId;
 import com.hanwul.kbscbackend.exception.WrongEmotionType;
+import com.hanwul.kbscbackend.exception.WrongInputException;
 import com.hanwul.kbscbackend.exception.WrongMatchEmotion;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,11 +39,8 @@ public class EmotionService {
     private final AccountRepository accountRepository;
 
     public BasicResponseDto<EmotionDto> read(Long emotionId) {
-        Optional<Emotion> result = emotionRepository.findById(emotionId);
-        if (result.isEmpty()) {
-            throw new WrongEmotionId();
-        }
-        Emotion emotion = result.get();
+        Emotion emotion = emotionRepository.findById(emotionId)
+                .orElseThrow(() -> new WrongId(emotionId, ExceptionTypes.EMOTION));
         EmotionDto emotionDto = entityToDto(emotion);
         return new BasicResponseDto<>(HttpStatus.OK.value(), "emotion", emotionDto);
     }
@@ -54,13 +57,10 @@ public class EmotionService {
     @Transactional
     public BasicResponseDto<Long> modify(Long emotionID, EmotionDto emotionDto, Principal principal) {
         Account request_account = get_account(principal);
-        Optional<Emotion> byId = emotionRepository.findById(emotionID);
-        if (byId.isEmpty()) {
-            throw new WrongEmotionId();
-        }
-        Emotion emotion = byId.get();
+        Emotion emotion = emotionRepository.findById(emotionID)
+                .orElseThrow(() -> new WrongId(emotionID, ExceptionTypes.EMOTION));
         if (emotion.getAccount().getId() != request_account.getId()) {
-            throw new WrongMatchEmotion();
+            throw new NoAuthorization(emotionID, HttpMethod.PUT, ExceptionTypes.EMOTION);
         }
         emotion.changeContent(emotionDto.getContent());
         emotion.changeStatus(emotionDto.getStatus());
@@ -75,13 +75,10 @@ public class EmotionService {
     @Transactional
     public BasicResponseDto<Void> delete(Long id, Principal principal) {
         Account account = get_account(principal);
-        Optional<Emotion> byId = emotionRepository.findById(id);
-        if (byId.isEmpty()) {
-            throw new WrongEmotionId();
-        }
-        Emotion emotion = byId.get();
+        Emotion emotion = emotionRepository.findById(id)
+                .orElseThrow(() -> new WrongId(id, ExceptionTypes.EMOTION));
         if (emotion.getAccount().getId() != account.getId()) {
-            throw new WrongMatchEmotion();
+            throw new NoAuthorization(id, HttpMethod.PUT, ExceptionTypes.EMOTION);
         }
         emotionRepository.deleteById(id);
         emotionLikeRepository.deleteByAccount(account);
@@ -120,7 +117,7 @@ public class EmotionService {
             // public 한 애들 -> 시간 순
             result = emotionRepository.findAllPublicStatus(Sort.by("createdDateTime").descending());
         } else {
-            throw new WrongEmotionType();
+            throw new InvalidInput("emotion", "타입이 PRIVATE이거나 PUBLIC 이어야함", ExceptionTypes.EMOTION);
         }
         List<EmotionDto> emotionDtos = result.stream().map(emotion -> entityToDto(emotion))
                 .collect(Collectors.toList());
@@ -138,13 +135,8 @@ public class EmotionService {
     @Transactional
     public BasicResponseDto<Void> like(Long emotionId, Principal principal) {
         Account account = get_account(principal);
-        Optional<Emotion> byId = emotionRepository.findById(emotionId);
-
-        if (byId.isEmpty()) {
-            throw new WrongEmotionId();
-        }
-
-        Emotion emotion = byId.get();
+        Emotion emotion = emotionRepository.findById(emotionId)
+                .orElseThrow(() -> new WrongId(emotionId, ExceptionTypes.EMOTION));
         Optional<EmotionLike> byAccountAndEmotion = emotionLikeRepository.findByAccountAndEmotion(account, emotion);
         byAccountAndEmotion.ifPresentOrElse(
                 emotionLike -> {
@@ -178,6 +170,4 @@ public class EmotionService {
         }
         return new BasicResponseDto<>(HttpStatus.OK.value(), "emotion", list);
     }
-
-
 }
