@@ -1,5 +1,6 @@
 package com.hanwul.kbscbackend.exception;
 
+import com.hanwul.kbscbackend.exception.common.DetailInformations;
 import com.hanwul.kbscbackend.exception.common.ExceptionOccurrencePackages;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -9,8 +10,8 @@ public class NoAuthorization extends RuntimeException{
     private HttpStatus httpStatus;
     private String hint;
 
-    public NoAuthorization(ExceptionOccurrencePackages occurrencePackages, String detailInformation) {
-        super("요청에 대한 권한이 없음. [detail] " + detailInformation);
+    public NoAuthorization(ExceptionOccurrencePackages occurrencePackages, DetailInformations detailInformation) {
+        super("요청에 대한 권한이 없음. [detail] " + detailInformation.toString());
         this.httpStatus = HttpStatus.FORBIDDEN;
         this.occurrencePackages = occurrencePackages.toString();
     }
