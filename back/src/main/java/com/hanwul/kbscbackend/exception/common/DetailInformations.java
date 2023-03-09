@@ -5,7 +5,8 @@ public enum DetailInformations {
     UNKNOWN_USERNAME("등록되지 않은 user name"),
     WRONG_PASSWORD("잘못된 password"),
     QUESTION_EXCEPTION("Question 객체 오류"),
-    ANSWER_EXCEPTION("Answer 객체 오류");
+    ANSWER_EXCEPTION("Answer 객체 오류"),
+    CHATROOM_EXCEPTION("ChatRoom 조회 오류");
 
 
 

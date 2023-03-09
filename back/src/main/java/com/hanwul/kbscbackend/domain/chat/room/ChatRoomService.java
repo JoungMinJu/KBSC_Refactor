@@ -5,6 +5,7 @@ import com.hanwul.kbscbackend.domain.account.AccountRepository;
 import com.hanwul.kbscbackend.domain.rate.RateRepository;
 import com.hanwul.kbscbackend.dto.BasicResponseDto;
 import com.hanwul.kbscbackend.exception.WrongId;
+import com.hanwul.kbscbackend.exception.common.DetailInformations;
 import com.hanwul.kbscbackend.exception.common.ExceptionOccurrencePackages;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +39,7 @@ public class ChatRoomService {
 
     public BasicResponseDto<ChatRoomDto> read(Long chatRoomId) {
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
-                .orElseThrow(() -> new WrongId(CHAT, "ChatRoom 조회 오류"));
+                .orElseThrow(() -> new WrongId(CHAT, DetailInformations.CHATROOM_EXCEPTION));
         ChatRoomDto chatRoomDto = entityToDto(chatRoom);
         return new BasicResponseDto<>(HttpStatus.OK.value(), "chatRoom", chatRoomDto);
     }
