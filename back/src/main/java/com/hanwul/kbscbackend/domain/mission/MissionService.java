@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.hanwul.kbscbackend.exception.common.DetailInformations.CATEGORY_EXCEPTION;
+import static com.hanwul.kbscbackend.exception.common.DetailInformations.MISSION_EXCEPTION;
 import static com.hanwul.kbscbackend.exception.common.ExceptionOccurrencePackages.*;
 
 @RequiredArgsConstructor
@@ -47,7 +49,7 @@ public class MissionService {
     public BasicResponseDto<Void> toggleClick(Long categoryId, Principal principal) {
         Account account = get_account(principal);
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new WrongId(MISSION, "Category 객체 조회 오류"));
+                .orElseThrow(() -> new WrongId(MISSION, CATEGORY_EXCEPTION));
         Optional<CategoryAccount> categoryAccount = categoryAccountRepository.findByAccountAndCategory(account, category);
         categoryAccount.ifPresentOrElse(
                 ca -> {
@@ -106,7 +108,7 @@ public class MissionService {
         for (int i = 0; i < 5; i++) {
             long finalRandom = random;
             Mission mission = missionRepository.findById(random)
-                    .orElseThrow(() -> new WrongId(MISSION, "Mission 객체 조회 오류"));
+                    .orElseThrow(() -> new WrongId(MISSION, MISSION_EXCEPTION));
             MissionResponseDto missionResponseDto = entityToDto(mission);
             result.add(missionResponseDto);
             random = random + 5;

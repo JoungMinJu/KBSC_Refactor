@@ -9,6 +9,8 @@ public enum DetailInformations {
     CHATROOM_EXCEPTION("ChatRoom 객체 오류"),
     EMOTION_EXCEPTION("Emotion 객체 오류"),
     EMOTION_TYPES_EXCEPTION("타입이 PRIVATE이거나 PUBLIC 이어야함"),
+    MISSION_EXCEPTION("Mission 객체 오류"),
+    CATEGORY_EXCEPTION("Category 객체 오류")
     ;
 
 
