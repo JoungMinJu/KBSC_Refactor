@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.hanwul.kbscbackend.exception.common.DetailInformations.*;
 import static com.hanwul.kbscbackend.exception.common.ExceptionOccurrencePackages.ACCOUNT;
 
 @Slf4j
@@ -34,7 +35,7 @@ public class AccountService {
     public Account save(SignUpDto signUpDto) {
         String username = signUpDto.getUsername();
         if (accountRepository.findByUsername(username).isPresent()) {
-            throw new InvalidInput(ACCOUNT, "중복된 user name");
+            throw new InvalidInput(ACCOUNT, DUPLICATED_USERNAME);
         }
         Account account = accountRepository.save(toEntity(signUpDto));
         List<Mission> missions = missionRepository.findAll();
@@ -59,9 +60,9 @@ public class AccountService {
         // 입력받은 password
         String password = loginDto.getPassword();
         Account member = accountRepository.findByUsername(loginDto.getUsername())
-                .orElseThrow(() -> new InvalidInput(ACCOUNT, "등록되지 않은 username"));
+                .orElseThrow(() -> new InvalidInput(ACCOUNT, UNKNOWN_USERNAME));
         if (!passwordEncoder.matches(password, member.getPassword())) {
-            throw new InvalidInput(ACCOUNT, "잘못된 password");
+            throw new InvalidInput(ACCOUNT, WRONG_PASSWORD);
         }
     }
 
