@@ -7,6 +7,7 @@ import com.hanwul.kbscbackend.domain.questionanswer.question.QuestionRepository;
 import com.hanwul.kbscbackend.dto.BasicResponseDto;
 import com.hanwul.kbscbackend.exception.NoAuthorization;
 import com.hanwul.kbscbackend.exception.WrongId;
+import com.hanwul.kbscbackend.exception.common.DetailInformations;
 import com.hanwul.kbscbackend.file.aws.FileUploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.hanwul.kbscbackend.exception.common.DetailInformations.ANSWER_EXCEPTION;
+import static com.hanwul.kbscbackend.exception.common.DetailInformations.QUESTION_EXCEPTION;
 import static com.hanwul.kbscbackend.exception.common.ExceptionOccurrencePackages.*;
 
 @Slf4j
@@ -42,7 +45,7 @@ public class AnswerService {
     public BasicResponseDto<Long> create(Long questionId, AnswerDto answerDto, Principal principal) {
         Account account = get_account(principal);
         Question question = questionRepository.findById(questionId)
-                .orElseThrow(() -> new WrongId(ANSWER, "Question 객체 조회 오류"));
+                .orElseThrow(() -> new WrongId(ANSWER, QUESTION_EXCEPTION));
         answerDto.setQuestion_id(questionId);
         answerDto.setQuestion_content(question.getContent());
         Answer answer = dtoToEntity(answerDto, account);
@@ -54,7 +57,7 @@ public class AnswerService {
     // answerId로 가져오기
     public BasicResponseDto<AnswerDto> findAnswer(Long answerId) {
         Answer answer = answerRepository.findById(answerId)
-                .orElseThrow(() -> new WrongId(ANSWER, "Answer 객체 조회 오류"));
+                .orElseThrow(() -> new WrongId(ANSWER, ANSWER_EXCEPTION));
         AnswerDto dto = entityToDTO(answer);
         return new BasicResponseDto<>(HttpStatus.OK.value(), "answer", dto);
     }
@@ -71,7 +74,7 @@ public class AnswerService {
         LocalDateTime end = endDate.atTime(LocalTime.MAX);
 
         Question question = questionRepository.findById(questionId)
-                .orElseThrow(() -> new WrongId(ANSWER, "Question 객체 조회 오류"));
+                .orElseThrow(() -> new WrongId(ANSWER, QUESTION_EXCEPTION));
         Account account = get_account(principal);
         List<Answer> result =
                 answerRepository.findByQuestionAndAccountAndCreatedDateTimeBetween(question, account, start, end);
@@ -99,7 +102,7 @@ public class AnswerService {
         LocalDateTime end = localDate.atTime(LocalTime.MAX);
 
         Question question = questionRepository.findById(questionId)
-                .orElseThrow(() -> new WrongId(ANSWER, "Question 객체 조회 오류"));
+                .orElseThrow(() -> new WrongId(ANSWER, QUESTION_EXCEPTION));
         Account account = get_account(principal);
         List<Answer> result =
                 answerRepository.findByQuestionAndAccountAndCreatedDateTimeBetween(question, account, start, end);
@@ -139,9 +142,9 @@ public class AnswerService {
     public BasicResponseDto<AnswerDto> modify(Long answerId, AnswerDto answerDto, Principal principal) {
         Account request_account = get_account(principal);
         Answer answer = answerRepository.findById(answerId)
-                .orElseThrow(() -> new WrongId(ANSWER, "Answer 객체 조회 오류"));
+                .orElseThrow(() -> new WrongId(ANSWER, ANSWER_EXCEPTION));
         if (answer.getAccount().getId() != request_account.getId()) {
-            throw new NoAuthorization(ANSWER, "Answer 객체 오류");
+            throw new NoAuthorization(ANSWER, ANSWER_EXCEPTION);
         }
         answer.changeAnswer(answerDto.getAnswer());
         AnswerDto answerDto1 = entityToDTO(answer);
@@ -152,9 +155,9 @@ public class AnswerService {
     public BasicResponseDto<Void> delete(Long answerId, Principal principal) {
         Account account = get_account(principal);
         Answer answer = answerRepository.findById(answerId)
-                .orElseThrow(() -> new WrongId(ANSWER, "Answer 객체 조회 오류"));
+                .orElseThrow(() -> new WrongId(ANSWER, ANSWER_EXCEPTION));
         if (answer.getAccount().getId() != account.getId()) {
-            throw new NoAuthorization(ANSWER, "Answer 객체 오류");
+            throw new NoAuthorization(ANSWER, ANSWER_EXCEPTION);
         }
         answerRepository.deleteById(answerId);
         return new BasicResponseDto<>(HttpStatus.OK.value(), "answer", null);
@@ -167,7 +170,7 @@ public class AnswerService {
 
     public Answer dtoToEntity(AnswerDto answerDto, Account account) {
         Question question = questionRepository.findById(answerDto.getQuestion_id())
-                .orElseThrow(() -> new WrongId(ANSWER, "Question 객체 조회 오류"));
+                .orElseThrow(() -> new WrongId(ANSWER, QUESTION_EXCEPTION));
         return Answer.builder()
                 .id(answerDto.getId())
                 .account(account)
