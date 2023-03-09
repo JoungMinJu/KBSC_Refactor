@@ -6,7 +6,10 @@ public enum DetailInformations {
     WRONG_PASSWORD("잘못된 password"),
     QUESTION_EXCEPTION("Question 객체 오류"),
     ANSWER_EXCEPTION("Answer 객체 오류"),
-    CHATROOM_EXCEPTION("ChatRoom 조회 오류");
+    CHATROOM_EXCEPTION("ChatRoom 객체 오류"),
+    EMOTION_EXCEPTION("Emotion 객체 오류"),
+    EMOTION_TYPES_EXCEPTION("타입이 PRIVATE이거나 PUBLIC 이어야함"),
+    ;
 
 
 
