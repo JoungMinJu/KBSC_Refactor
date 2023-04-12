@@ -18,7 +18,6 @@ public class EmotionController {
 
     @GetMapping
     public BasicResponseDto<List<EmotionDto>> getAllPosts(EmotionSearchDto emotionSearchDto, Principal principal) {
-        log.info("{}", emotionService.getAllEmotionDtos(emotionSearchDto, principal));
         return emotionService.getAllEmotionDtos(emotionSearchDto, principal);
     }
 
