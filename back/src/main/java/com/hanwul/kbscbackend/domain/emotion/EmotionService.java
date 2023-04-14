@@ -116,7 +116,7 @@ public class EmotionService {
             result = emotionRepository.findAllByAccount(account);
         } else if (type.equals("public")) {
             // public 한 애들 -> 시간 순
-            result = emotionRepository.findAllPublicStatus(Sort.by("createdDateTime").descending());
+            result = emotionRepository.findAllPublicStatus();
         } else {
             throw new InvalidInput(EMOTION,EMOTION_TYPES_EXCEPTION);
         }
