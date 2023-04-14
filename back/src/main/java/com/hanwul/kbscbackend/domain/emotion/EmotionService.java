@@ -122,10 +122,13 @@ public class EmotionService {
         }
         List<EmotionDto> emotionDtos = result.stream().map(emotion -> entityToDto(emotion))
                 .collect(Collectors.toList());
-        for (EmotionDto emotionDto : emotionDtos) {
-            for (EmotionLike emotionLike : liked) {
-                if (emotionLike.getEmotion().getId() == emotionDto.getId()) {
-                    emotionDto.setLike(true);
+        if (type.equals("public")) {
+            for (EmotionDto emotionDto : emotionDtos) {
+                for (EmotionLike emotionLike : liked) {
+                    if (emotionLike.getEmotion().getId() == emotionDto.getId()) {
+                        emotionDto.setLike(true);
+                        break;
+                    }
                 }
             }
         }
