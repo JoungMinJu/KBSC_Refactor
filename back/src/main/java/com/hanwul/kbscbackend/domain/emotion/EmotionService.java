@@ -116,16 +116,19 @@ public class EmotionService {
             result = emotionRepository.findAllByAccount(account);
         } else if (type.equals("public")) {
             // public 한 애들 -> 시간 순
-            result = emotionRepository.findAllPublicStatus(Sort.by("createdDateTime").descending());
+            result = emotionRepository.findAllPublicStatus();
         } else {
             throw new InvalidInput(EMOTION,EMOTION_TYPES_EXCEPTION);
         }
         List<EmotionDto> emotionDtos = result.stream().map(emotion -> entityToDto(emotion))
                 .collect(Collectors.toList());
-        for (EmotionDto emotionDto : emotionDtos) {
-            for (EmotionLike emotionLike : liked) {
-                if (emotionLike.getEmotion().getId() == emotionDto.getId()) {
-                    emotionDto.setLike(true);
+        if (type.equals("public")) {
+            for (EmotionDto emotionDto : emotionDtos) {
+                for (EmotionLike emotionLike : liked) {
+                    if (emotionLike.getEmotion().getId() == emotionDto.getId()) {
+                        emotionDto.setLike(true);
+                        break;
+                    }
                 }
             }
         }

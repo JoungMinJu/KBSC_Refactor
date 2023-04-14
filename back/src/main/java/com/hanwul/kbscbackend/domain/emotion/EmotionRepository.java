@@ -18,8 +18,8 @@ EmotionRepository extends JpaRepository<Emotion, Long> {
 
     List<Emotion> findAllByAccount(Account account);
 
-    @Query("SELECT e FROM Emotion e WHERE e.status =  'PUBLIC'")
-    List<Emotion> findAllPublicStatus(Sort sort);
+    @Query("SELECT e FROM Emotion e WHERE e.status = 'PUBLIC' order by e.createdDateTime desc")
+    List<Emotion> findAllPublicStatus();
 
     @Query("SELECT e FROM Emotion e WHERE  e.createdDateTime between :start and :end ")
     List<Emotion> findLikeTopSevenDays(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end, Sort sort);
